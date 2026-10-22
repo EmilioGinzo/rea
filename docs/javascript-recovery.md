@@ -134,7 +134,7 @@ equivalence remain unknown. No network fetching occurs.
 
 ## Resource policy and verification
 
-Each operation uses one worker, a 1 GiB address-space ceiling and a 120000 ms
+Each operation uses one worker, a 3 GiB address-space ceiling and a 120000 ms
 deadline. That deadline has no runtime override: raising `analysis_timeout_ms`
 or `max_heap_mb` does not raise it. An unchanged retry may hit the deadline
 again. The operation accepts up to 64 MiB of total

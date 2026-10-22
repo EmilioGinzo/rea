@@ -273,3 +273,9 @@ it("honors cancellation while waiting for output after exit", async () => {
     producer.stderr.destroy();
   }
 });
+
+it("leaves Node room to start: the address-space cap is at least 3 GiB", () => {
+  expect(RECOVERY_LIMITS.addressSpaceBytes).toBeGreaterThanOrEqual(
+    3 * 1024 * 1024 * 1024,
+  );
+});

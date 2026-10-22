@@ -1,5 +1,3 @@
-import { BOUNDED_PRODUCER_LIMITS } from "../../process/LinuxResourceLimits.js";
-
 /** Unchanged upstream source pin; executed bytes are identified separately. */
 export const WAKARU_RELEASE = {
   version: "1.14.0",
@@ -36,7 +34,9 @@ export const RECOVERY_LIMITS = {
   outputBytes: 128 * 1024 * 1024,
   outputEntries: 10000,
   reportBytes: 8 * 1024 * 1024,
-  addressSpaceBytes: BOUNDED_PRODUCER_LIMITS.address_space_bytes,
+  // Node reserves ~1.1 GiB of address space at startup, so 1 GiB killed Wakaru on every input;
+  // a 63 MB input needs 2-2.5 GiB. Same ceiling as EVM_INTERFACE_LIMITS.
+  addressSpaceBytes: 3 * 1024 * 1024 * 1024,
   cpuSeconds: 120,
   timeoutMs: 120000,
 } as const;
@@ -47,5 +47,5 @@ export const RECOVERY_LIMITATIONS = [
   "Extraction ranges refer to half-open UTF-8 byte offsets in the original input, not rewritten line positions or whole-bundle coverage.",
   "Emitted source maps are preserved as reported by the engine; their mapping accuracy is not independently established.",
   "Inspection mode may produce non-executable regions. No input or recovered application code is executed.",
-  "Linux adapter: one worker, 1 GiB address-space ceiling, 120-second deadline, 64 MiB total input, 128 MiB output, 10000 output entries and 8 MiB per diagnostic/report stream. Resource limits are per operation, not aggregate host containment.",
+  "Linux adapter: one worker, 3 GiB address-space ceiling, 120-second deadline, 64 MiB total input, 128 MiB output, 10000 output entries and 8 MiB per diagnostic/report stream. Resource limits are per operation, not aggregate host containment.",
 ] as const;
